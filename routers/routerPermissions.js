@@ -70,7 +70,6 @@ routerPermissions.post("/", (req,res) => {
         return res.status(400).json({ errors: errors})
     }
 
-
     let lastId = permissions[permissions.length-1].id
 
     permissions.push({
