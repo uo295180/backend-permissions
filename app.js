@@ -1,14 +1,13 @@
-const express = require("express")
+let express = require("express")
 
-const app = express()
-const port = 8081
+let app = express();
+let port = 8081;
 
-app.use(express.json)
+app.use(express.json())
 
 let routerPermissions = require("./routers/routerPermissions")
-
 app.use("/permissions", routerPermissions)
 
-app.listen(port, () =>{
-    console.log("Servidor activo en " + port)
+app.listen(port, () => {
+    console.log("Servidor activo en "+port)
 })
