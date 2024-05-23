@@ -1,7 +1,9 @@
-let express = require("express")
+const express = require("express")
 
-let app = express();
-let port = 8081;
+const app = express()
+const port = 8081
+
+app.use(express.json)
 
 let routerPermissions = require("./routers/routerPermissions")
 
