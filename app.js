@@ -5,6 +5,16 @@ let port = 8081;
 
 app.use(express.json())
 
+app.use(["/permnissions"], (req,res,next) => {
+    console.log("middleware execution")
+    next()
+})
+
+app.use(["/users"], (req,res,next) => {
+    console.log("middleware execution")
+    next()
+})
+
 let routerPermissions = require("./routers/routerPermissions")
 app.use("/permissions", routerPermissions)
 
