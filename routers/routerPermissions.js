@@ -25,6 +25,25 @@ routerPermissions.get("/:id", (req, res) => {
     res.json(permission)
 })
 
+routerPermissions.put("/:id", (req, res) => {
+    let permissionId = req.params.id
+
+    if(permissionId == undefined){
+        return res.status(400).json({ error: "no id"})
+    }
+    let permission = permissions.find(p => p.id == permissionId)
+
+    if(permission == undefined){
+        return res.status(400).json({ error: "no permission with this id"})
+    }
+
+    let text = req.body.text
+    if(text != undefined){
+        permission.text = text;
+    }
+    res.json({ modified: true})
+})
+
 routerPermissions.put("/:id/approvedBy", (req, res) => {
     let permissionsId = req.params.id
     let autorizerEmail = req.body.autorizerEmail
@@ -38,7 +57,7 @@ routerPermissions.put("/:id/approvedBy", (req, res) => {
 
     let permission = permissions.find(p => p.id == permissionsId)
     if(permission == undefined){
-        return res.status(401).json({ error: "The specified permission does not exist" })
+        return res.status(400).json({ error: "The specified permission does not exist" })
     }
 
     if(permission.approvedBy.find(ap => ap == authorizer.id) != undefined){
