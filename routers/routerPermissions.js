@@ -25,6 +25,23 @@ routerPermissions.get("/:id", (req, res) => {
     res.json(permission)
 })
 
+routerPermissions.delete("/:id", (req, res) =>{
+    let permissionId = req.params.id
+
+    if(permissionId == undefined){
+        return res.status(400).json({ error: "no id"})
+    }
+    let permission = permissions.find(p => p.id == permissionId)
+
+    if(permission == undefined){
+        return res.status(400).json({ error: "no permission with this id"})
+    }
+
+    permissions = permissions.filter(p => p.id != permissionId)
+
+    res.json({ deleted: true })
+})
+
 routerPermissions.put("/:id", (req, res) => {
     let permissionId = req.params.id
 
