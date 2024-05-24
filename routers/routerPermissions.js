@@ -29,9 +29,7 @@ routerPermissions.get("/:id", (req, res) => {
 })
 
 routerPermissions.delete("/:id", (req, res) =>{
-
     let permissionId = req.params.id
-
     if(permissionId == undefined){
         return res.status(400).json({ error: "no id"})
     }
@@ -39,6 +37,9 @@ routerPermissions.delete("/:id", (req, res) =>{
 
     if(permission == undefined){
         return res.status(400).json({ error: "no permission with this id"})
+    }
+    if(users.find(u => u.id == req.infoApiKey.id).role == "user" && permission.userId != req.infoApiKey.id ){
+        return res.status(401).json({error: "This is not your permission and you're not admin"})
     }
 
     permissions = permissions.filter(p => p.id != permissionId)
