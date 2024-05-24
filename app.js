@@ -1,4 +1,5 @@
 let express = require("express")
+let jwt = require("jsonwebtoken")
 
 let app = express();
 let port = 8081;
@@ -7,13 +8,21 @@ app.use(express.json())
 
 app.use(["/permnissions"], (req,res,next) => {
     console.log("middleware execution")
+    let apiKey = req.query.apiKey
+    if(apiKey == undefined){
+        return res.status(401).json({error: "apiKey required"})
+    }
+    let infoApiKey = null
+    try{
+        infoApiKey = jwt.verify(apiKey, "secret")
+    } catch (error) {
+        return res.status(401).json({ error: "invalid token"})
+    }
+
+    req.infoApiKey = infoApiKey
     next()
 })
 
-app.use(["/users"], (req,res,next) => {
-    console.log("middleware execution")
-    next()
-})
 
 let routerPermissions = require("./routers/routerPermissions")
 app.use("/permissions", routerPermissions)
